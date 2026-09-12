@@ -167,7 +167,7 @@ fruitPredictBtn.addEventListener(
 
             const response =
                 await fetch(
-                    `${BACKEND_URL}/predict/fruit`,
+                    `${BACKEND_URL}`,
                     {
                         method: "POST",
                         body: formData
