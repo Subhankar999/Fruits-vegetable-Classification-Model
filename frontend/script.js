@@ -131,23 +131,17 @@ fruitPredictBtn.addEventListener("click", async function () {
 
         console.log("Backend response:", data);
 
-
-        // Get fruit name
-        const fruitName = data.prediction;
-
+                // Get fruit name
+        const fruitName = data.Fruit;
 
         // Get confidence
-        const confidence = Number(data.confidence);
+        let confidence = Number(data.Confidence);
 
-
-        // Check confidence
-        if (isNaN(confidence)) {
-
+        if (Number.isNaN(confidence)) {
             throw new Error(
                 "Confidence value received from backend is not a number."
             );
         }
-
 
         // =================================================
         // SHOW RESULT
