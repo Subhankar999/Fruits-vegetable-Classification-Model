@@ -7,9 +7,16 @@ from PIL import Image
 from torchvision.datasets import ImageFolder
 from io import BytesIO
 import json
+from fastapi.middleware.cors import CORSMiddleware
 device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 app=FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # creating model
 class my_cnn(nn.Module):
