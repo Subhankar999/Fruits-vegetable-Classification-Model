@@ -10,7 +10,7 @@ The model is trained to classify **77 different types of fruits and vegetables**
 
 The application is deployed using **Vercel** for the frontend and **Render** for the backend.
 
-## 🔗 Project Link : fruits-vegetable-classification-mod.vercel.app
+## 🔗 Project Link : https://fruits-vegetable-classification-mod.vercel.app/
 
 ## 🛠️ Tools & Technologies Used
 
