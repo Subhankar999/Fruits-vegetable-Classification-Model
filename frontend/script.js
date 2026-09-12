@@ -235,7 +235,7 @@ fruitPredictBtn.addEventListener("click", async function () {
         // =================================================
 
         fruitResult.textContent =
-            `Fruit: ${fruitName}`;
+            `${fruitName}`;
 
 
         // =================================================
