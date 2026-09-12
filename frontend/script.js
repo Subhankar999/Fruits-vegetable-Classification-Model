@@ -69,42 +69,6 @@ fruitInput.addEventListener("change", function () {
 });
 
 
-// =====================================================
-// VEGETABLE IMAGE PREVIEW
-// =====================================================
-
-vegetableInput.addEventListener("change", function () {
-
-    const file = this.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    const imageURL =
-        URL.createObjectURL(file);
-
-    vegetablePreview.src =
-        imageURL;
-
-    vegetablePreview.style.display =
-        "block";
-
-    vegetablePlaceholder.style.display =
-        "none";
-
-    vegetablePredictBtn.disabled =
-        false;
-
-    vegetableResult.textContent =
-        "Ready to predict";
-
-    vegetableConfidence.textContent =
-        "0%";
-
-    vegetableProgress.style.width =
-        "0%";
-});
 
 
 // =====================================================
