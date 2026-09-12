@@ -3,7 +3,7 @@
 // =====================================================
 
 const BACKEND_URL =
-    "https://fruits-vegetable-classification-model.onrender.com/predict";
+    "https://fruits-vegetable-classification-model.onrender.com";
 
 
 // =====================================================
