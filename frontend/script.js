@@ -32,30 +32,7 @@ const fruitProgress =
     document.getElementById("fruitProgress");
 
 
-// =====================================================
-// VEGETABLE ELEMENTS
-// =====================================================
 
-const vegetableInput =
-    document.getElementById("vegetableInput");
-
-const vegetablePreview =
-    document.getElementById("vegetablePreview");
-
-const vegetablePlaceholder =
-    document.getElementById("vegetablePlaceholder");
-
-const vegetablePredictBtn =
-    document.getElementById("vegetablePredictBtn");
-
-const vegetableResult =
-    document.getElementById("vegetableResult");
-
-const vegetableConfidence =
-    document.getElementById("vegetableConfidence");
-
-const vegetableProgress =
-    document.getElementById("vegetableProgress");
 
 
 // =====================================================
