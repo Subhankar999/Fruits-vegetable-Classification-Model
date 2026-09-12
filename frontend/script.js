@@ -1,22 +1,7 @@
-// =====================================================
-// BACKEND URL
-// =====================================================
-
 const BACKEND_URL =
     "https://fruits-vegetable-classification-model.onrender.com/predict";
 
-
-// =====================================================
-// MAXIMUM FILE SIZE
-// Example: 10 MB
-// =====================================================
-
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
-
-
-// =====================================================
-// ALLOWED IMAGE EXTENSIONS
-// =====================================================
 
 const ALLOWED_EXTENSIONS = [
     ".jpg",
@@ -27,11 +12,6 @@ const ALLOWED_EXTENSIONS = [
     ".tiff",
     ".tif"
 ];
-
-
-// =====================================================
-// FRUIT ELEMENTS
-// =====================================================
 
 const fruitInput =
     document.getElementById("fruitInput");
@@ -54,24 +34,8 @@ const fruitConfidence =
 const fruitProgress =
     document.getElementById("fruitProgress");
 
-
-// =====================================================
-// ERROR MESSAGE ELEMENT
-// =====================================================
-
-// If you already have an error element in HTML,
-// this will use it.
-//
-// Example:
-// <div id="fruitError"></div>
-
 const fruitError =
     document.getElementById("fruitError");
-
-
-// =====================================================
-// SHOW ERROR ON WEBSITE
-// =====================================================
 
 function showError(message) {
 
@@ -86,19 +50,12 @@ function showError(message) {
             "block";
 
     } else {
-
-        // Fallback if fruitError doesn't exist
         fruitResult.textContent =
             `⚠️ ${message}`;
 
     }
 
 }
-
-
-// =====================================================
-// CLEAR ERROR
-// =====================================================
 
 function clearError() {
 
@@ -113,11 +70,6 @@ function clearError() {
 
 }
 
-
-// =====================================================
-// RESET RESULT
-// =====================================================
-
 function resetResult() {
 
     fruitResult.textContent =
@@ -131,11 +83,6 @@ function resetResult() {
 
 }
 
-
-// =====================================================
-// CHECK FILE EXTENSION
-// =====================================================
-
 function isAllowedFile(file) {
 
     const fileName =
@@ -148,11 +95,6 @@ function isAllowedFile(file) {
 
 }
 
-
-// =====================================================
-// IMAGE PREVIEW
-// =====================================================
-
 fruitInput.addEventListener(
     "change",
     function () {
@@ -161,11 +103,6 @@ fruitInput.addEventListener(
 
         const file =
             this.files[0];
-
-
-        // ---------------------------------------------
-        // No file
-        // ---------------------------------------------
 
         if (!file) {
 
@@ -176,11 +113,6 @@ fruitInput.addEventListener(
 
             return;
         }
-
-
-        // ---------------------------------------------
-        // Check extension
-        // ---------------------------------------------
 
         if (!isAllowedFile(file)) {
 
@@ -196,11 +128,6 @@ fruitInput.addEventListener(
             return;
         }
 
-
-        // ---------------------------------------------
-        // Check file size
-        // ---------------------------------------------
-
         if (file.size > MAX_FILE_SIZE) {
 
             showError(
@@ -214,11 +141,6 @@ fruitInput.addEventListener(
 
             return;
         }
-
-
-        // ---------------------------------------------
-        // Check actual MIME type
-        // ---------------------------------------------
 
         if (
             !file.type.startsWith("image/")
@@ -236,11 +158,6 @@ fruitInput.addEventListener(
             return;
         }
 
-
-        // ---------------------------------------------
-        // Create preview
-        // ---------------------------------------------
-
         const imageURL =
             URL.createObjectURL(file);
 
@@ -253,18 +170,8 @@ fruitInput.addEventListener(
         fruitPlaceholder.style.display =
             "none";
 
-
-        // ---------------------------------------------
-        // Enable prediction
-        // ---------------------------------------------
-
         fruitPredictBtn.disabled =
             false;
-
-
-        // ---------------------------------------------
-        // Reset result
-        // ---------------------------------------------
 
         fruitResult.textContent =
             "Ready to predict";
@@ -278,11 +185,6 @@ fruitInput.addEventListener(
     }
 );
 
-
-// =====================================================
-// FRUIT PREDICTION
-// =====================================================
-
 fruitPredictBtn.addEventListener(
     "click",
     async function () {
@@ -291,11 +193,6 @@ fruitPredictBtn.addEventListener(
 
         const file =
             fruitInput.files[0];
-
-
-        // =================================================
-        // CHECK FILE
-        // =================================================
 
         if (!file) {
 
@@ -306,11 +203,6 @@ fruitPredictBtn.addEventListener(
             return;
         }
 
-
-        // =================================================
-        // CHECK EXTENSION
-        // =================================================
-
         if (!isAllowedFile(file)) {
 
             showError(
@@ -320,11 +212,6 @@ fruitPredictBtn.addEventListener(
             return;
         }
 
-
-        // =================================================
-        // CHECK FILE SIZE
-        // =================================================
-
         if (file.size > MAX_FILE_SIZE) {
 
             showError(
@@ -333,11 +220,6 @@ fruitPredictBtn.addEventListener(
 
             return;
         }
-
-
-        // =================================================
-        // CHANGE UI
-        // =================================================
 
         fruitPredictBtn.disabled =
             true;
@@ -354,12 +236,7 @@ fruitPredictBtn.addEventListener(
         fruitProgress.style.width =
             "0%";
 
-
         try {
-
-            // =================================================
-            // CREATE FORM DATA
-            // =================================================
 
             const formData =
                 new FormData();
@@ -369,19 +246,8 @@ fruitPredictBtn.addEventListener(
                 file
             );
 
-
-            // =================================================
-            // CREATE ABORT CONTROLLER
-            // =================================================
-
             const controller =
                 new AbortController();
-
-
-            // =================================================
-            // TIMEOUT
-            // 60 seconds
-            // =================================================
 
             const timeout =
                 setTimeout(
@@ -389,13 +255,7 @@ fruitPredictBtn.addEventListener(
                     60000
                 );
 
-
             let response;
-
-
-            // =================================================
-            // SEND REQUEST
-            // =================================================
 
             try {
 
@@ -413,10 +273,6 @@ fruitPredictBtn.addEventListener(
 
                 clearTimeout(timeout);
 
-                // ---------------------------------------------
-                // Timeout
-                // ---------------------------------------------
-
                 if (
                     networkError.name ===
                     "AbortError"
@@ -428,34 +284,18 @@ fruitPredictBtn.addEventListener(
 
                 }
 
-
-                // ---------------------------------------------
-                // Network error
-                // ---------------------------------------------
-
                 throw new Error(
                     "Unable to connect to the backend server. Please check your internet connection or try again later."
                 );
 
             }
 
-
             clearTimeout(timeout);
-
-
-            // =================================================
-            // HTTP STATUS ERROR
-            // =================================================
 
             if (!response.ok) {
 
                 let errorMessage =
                     "";
-
-
-                // ---------------------------------------------
-                // Try to read backend JSON error
-                // ---------------------------------------------
 
                 try {
 
@@ -466,7 +306,6 @@ fruitPredictBtn.addEventListener(
                         "Backend error:",
                         errorData
                     );
-
 
                     if (
                         errorData.detail
@@ -493,10 +332,6 @@ fruitPredictBtn.addEventListener(
 
                 } catch (jsonError) {
 
-                    // -----------------------------------------
-                    // Backend did not return JSON
-                    // -----------------------------------------
-
                     try {
 
                         errorMessage =
@@ -509,11 +344,6 @@ fruitPredictBtn.addEventListener(
                     }
 
                 }
-
-
-                // =================================================
-                // DEFAULT HTTP ERROR MESSAGES
-                // =================================================
 
                 if (!errorMessage) {
 
@@ -528,14 +358,12 @@ fruitPredictBtn.addEventListener(
 
                             break;
 
-
                         case 404:
 
                             errorMessage =
                                 "Prediction endpoint was not found.";
 
                             break;
-
 
                         case 413:
 
@@ -544,14 +372,12 @@ fruitPredictBtn.addEventListener(
 
                             break;
 
-
                         case 422:
 
                             errorMessage =
                                 "Invalid data was sent to the server.";
 
                             break;
-
 
                         case 500:
 
@@ -560,14 +386,12 @@ fruitPredictBtn.addEventListener(
 
                             break;
 
-
                         case 502:
 
                             errorMessage =
                                 "The backend server is temporarily unavailable.";
 
                             break;
-
 
                         case 503:
 
@@ -576,14 +400,12 @@ fruitPredictBtn.addEventListener(
 
                             break;
 
-
                         case 504:
 
                             errorMessage =
                                 "The backend server took too long to respond.";
 
                             break;
-
 
                         default:
 
@@ -594,20 +416,13 @@ fruitPredictBtn.addEventListener(
 
                 }
 
-
                 throw new Error(
                     errorMessage
                 );
 
             }
 
-
-            // =================================================
-            // CONVERT RESPONSE TO JSON
-            // =================================================
-
             let data;
-
 
             try {
 
@@ -622,16 +437,10 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
             console.log(
                 "Backend response:",
                 data
             );
-
-
-            // =================================================
-            // CHECK BACKEND RESPONSE
-            // =================================================
 
             if (!data) {
 
@@ -641,14 +450,8 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
-            // =================================================
-            // GET FRUIT NAME
-            // =================================================
-
             const fruitName =
                 data.Fruit;
-
 
             if (
                 !fruitName ||
@@ -661,20 +464,8 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
-            // =================================================
-            // GET CONFIDENCE
-            // =================================================
-
             let confidence =
                 data.Confidence;
-
-
-            // Convert string to number
-            //
-            // Example:
-            // "99.77%" → 99.77
-            //
 
             if (
                 typeof confidence ===
@@ -695,11 +486,6 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
-            // =================================================
-            // CHECK CONFIDENCE
-            // =================================================
-
             if (
                 Number.isNaN(
                     confidence
@@ -712,11 +498,6 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
-            // =================================================
-            // CHECK CONFIDENCE RANGE
-            // =================================================
-
             if (
                 confidence < 0 ||
                 confidence > 100
@@ -728,33 +509,16 @@ fruitPredictBtn.addEventListener(
 
             }
 
-
-            // =================================================
-            // SHOW RESULT
-            // =================================================
-
             fruitResult.textContent =
-                `Fruit: ${fruitName}`;
-
+                `${fruitName}`;
 
             fruitConfidence.textContent =
                 `Confidence: ${confidence.toFixed(2)}%`;
 
-
-            // =================================================
-            // PROGRESS BAR
-            // =================================================
-
             fruitProgress.style.width =
                 `${confidence}%`;
 
-
-            // =================================================
-            // SUCCESS MESSAGE
-            // =================================================
-
             clearError();
-
 
             console.log(
                 "Prediction successful"
@@ -772,11 +536,6 @@ fruitPredictBtn.addEventListener(
 
         }
 
-
-        // =================================================
-        // ERROR HANDLING
-        // =================================================
-
         catch (error) {
 
             console.error(
@@ -784,20 +543,10 @@ fruitPredictBtn.addEventListener(
                 error
             );
 
-
-            // ---------------------------------------------
-            // Show exact error on website
-            // ---------------------------------------------
-
             showError(
                 error.message ||
                 "An unexpected error occurred."
             );
-
-
-            // ---------------------------------------------
-            // Reset prediction result
-            // ---------------------------------------------
 
             fruitResult.textContent =
                 "Prediction failed";
@@ -809,11 +558,6 @@ fruitPredictBtn.addEventListener(
                 "0%";
 
         }
-
-
-        // =================================================
-        // ENABLE BUTTON AGAIN
-        // =================================================
 
         fruitPredictBtn.disabled =
             false;
