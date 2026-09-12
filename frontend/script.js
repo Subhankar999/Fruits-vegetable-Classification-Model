@@ -35,7 +35,7 @@ fruitPredictBtn.addEventListener("click", async function () {
 
         // Send image to FastAPI
         const response = await fetch(
-            `${BACKEND_URL}/predict`,
+            `${BACKEND_URL}/predict/fruit`,
             {
                 method: "POST",
                 body: formData
