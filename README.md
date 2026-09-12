@@ -10,7 +10,7 @@ The model is trained to classify **77 different types of fruits and vegetables**
 
 The application is deployed using **Vercel** for the frontend and **Render** for the backend.
 
-## 🔗 Project Link : YOUR_FRONTEND_URL
+## 🔗 Project Link : fruits-vegetable-classification-mod.vercel.app
 
 ## 🛠️ Tools & Technologies Used
 
@@ -26,7 +26,6 @@ The application is deployed using **Vercel** for the frontend and **Render** for
 
 - FastAPI
 - Uvicorn
-- Pydantic
 - Python Multipart
 
 ### Frontend
@@ -47,7 +46,6 @@ The application is deployed using **Vercel** for the frontend and **Render** for
 
 ### Deployment & Development
 
-- Git
 - GitHub
 - Vercel
 - Render
