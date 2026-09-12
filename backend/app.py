@@ -80,7 +80,8 @@ def home():
     
 @app.post("/predict")
 async def predict(file :UploadFile=File(...)):
-    if not  file.filename.lower().endswith((".png",".jpg",".jpeg")):
+    if not  file.filename.lower().endswith((".jpg", ".jpeg", ".png", ".webp", ".bmp",
+     ".tiff", ".tif", ".avif", ".heic", ".heif")):
         raise HTTPException(
             status_code=400,
             detail="please upload a JPG / PNG/ JPEG file"
