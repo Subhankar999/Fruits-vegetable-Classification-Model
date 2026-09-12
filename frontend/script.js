@@ -145,9 +145,9 @@ fruitPredictBtn.addEventListener(
                 Number(data.confidence);
 
 
-            fruitConfidence.textContent =
-                confidence.toFixed(2) + "%";
-
+            // fruitConfidence.textContent =
+            //     confidence.toFixed(2) + "%";
+            console.log(data);
 
             fruitProgress.style.width =
                 confidence + "%";
