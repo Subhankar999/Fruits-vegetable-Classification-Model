@@ -32,9 +32,6 @@ const fruitProgress =
     document.getElementById("fruitProgress");
 
 
-
-
-
 // =====================================================
 // FRUIT IMAGE PREVIEW
 // =====================================================
@@ -47,6 +44,7 @@ fruitInput.addEventListener("change", function () {
         return;
     }
 
+    // Create image preview URL
     const imageURL =
         URL.createObjectURL(file);
 
@@ -56,8 +54,10 @@ fruitInput.addEventListener("change", function () {
 
     fruitPlaceholder.style.display = "none";
 
+    // Enable prediction button
     fruitPredictBtn.disabled = false;
 
+    // Reset previous result
     fruitResult.textContent =
         "Ready to predict";
 
@@ -69,14 +69,7 @@ fruitInput.addEventListener("change", function () {
 });
 
 
-
-
-
-
-
-
-
-
+// =====================================================
 // FRUIT PREDICTION
 // =====================================================
 
@@ -84,28 +77,51 @@ fruitPredictBtn.addEventListener("click", async function () {
 
     const file = fruitInput.files[0];
 
+    // Check if image is selected
     if (!file) {
+
         alert("Please select a fruit image.");
+
         return;
     }
 
+
+    // =================================================
+    // CHANGE BUTTON / RESULT STATUS
+    // =================================================
+
     fruitPredictBtn.disabled = true;
-    fruitPredictBtn.textContent = "⏳ Analyzing...";
-    fruitResult.textContent = "Analyzing image...";
-    fruitConfidence.textContent = "Calculating...";
-    fruitProgress.style.width = "0%";
+
+    fruitPredictBtn.textContent =
+        "⏳ Analyzing...";
+
+    fruitResult.textContent =
+        "Analyzing image...";
+
+    fruitConfidence.textContent =
+        "Calculating...";
+
+    fruitProgress.style.width =
+        "0%";
+
 
     try {
 
-        // Create form data
+        // =================================================
+        // CREATE FORM DATA
+        // =================================================
+
         const formData = new FormData();
 
         formData.append("file", file);
 
 
-        // Send image to FastAPI
+        // =================================================
+        // SEND IMAGE TO FASTAPI BACKEND
+        // =================================================
+
         const response = await fetch(
-            `${BACKEND_URL}`,
+            BACKEND_URL,
             {
                 method: "POST",
                 body: formData
@@ -113,12 +129,19 @@ fruitPredictBtn.addEventListener("click", async function () {
         );
 
 
-        // Check server response
+        // =================================================
+        // CHECK SERVER RESPONSE
+        // =================================================
+
         if (!response.ok) {
 
-            const errorText = await response.text();
+            const errorText =
+                await response.text();
 
-            console.error("Server error:", errorText);
+            console.error(
+                "Server error:",
+                errorText
+            );
 
             throw new Error(
                 `Server returned ${response.status}`
@@ -126,51 +149,151 @@ fruitPredictBtn.addEventListener("click", async function () {
         }
 
 
-        // Convert response to JSON
-        const data = await response.json();
+        // =================================================
+        // CONVERT RESPONSE TO JSON
+        // =================================================
 
-        console.log("Backend response:", data);
+        const data =
+            await response.json();
 
-                // Get fruit name
-        const fruitName = data.Fruit;
+        console.log(
+            "Backend response:",
+            data
+        );
 
-        // Get confidence
-        let confidence = Number(data.Confidence);
 
+        // =================================================
+        // GET FRUIT NAME
+        // =================================================
+
+        const fruitName =
+            data.Fruit;
+
+
+        // Check if fruit name exists
+        if (!fruitName) {
+
+            throw new Error(
+                "Fruit name was not received from backend."
+            );
+        }
+
+
+        // =================================================
+        // GET CONFIDENCE
+        // =================================================
+
+        let confidence =
+            data.Confidence;
+
+
+        // Convert confidence to number
+        // Works for both:
+        //
+        // 99.77
+        //
+        // and
+        //
+        // "99.77%"
+        //
+
+        if (typeof confidence === "string") {
+
+            confidence =
+                parseFloat(confidence);
+
+        } else {
+
+            confidence =
+                Number(confidence);
+
+        }
+
+
+        // Check confidence value
         if (Number.isNaN(confidence)) {
+
             throw new Error(
                 "Confidence value received from backend is not a number."
             );
         }
 
+
         // =================================================
-        // SHOW RESULT
+        // KEEP CONFIDENCE BETWEEN 0 AND 100
+        // =================================================
+
+        confidence =
+            Math.min(
+                Math.max(confidence, 0),
+                100
+            );
+
+
+        // =================================================
+        // SHOW FRUIT RESULT
         // =================================================
 
         fruitResult.textContent =
             `Fruit: ${fruitName}`;
 
 
+        // =================================================
+        // SHOW CONFIDENCE
+        // =================================================
+
         fruitConfidence.textContent =
             `Confidence: ${confidence.toFixed(2)}%`;
 
 
+        // =================================================
+        // UPDATE PROGRESS BAR
+        // =================================================
+
         fruitProgress.style.width =
-            `${Math.min(Math.max(confidence, 0), 100)}%`;
+            `${confidence}%`;
 
 
-    } catch (error) {
+        // =================================================
+        // CONSOLE OUTPUT
+        // =================================================
 
-        console.error("Prediction error:", error);
+        console.log(
+            "Predicted Fruit:",
+            fruitName
+        );
+
+        console.log(
+            "Confidence:",
+            confidence
+        );
+
+    }
+
+
+    // =================================================
+    // ERROR HANDLING
+    // =================================================
+
+    catch (error) {
+
+        console.error(
+            "Prediction error:",
+            error
+        );
+
 
         fruitResult.textContent =
             "Prediction failed";
 
+
         fruitConfidence.textContent =
             "Confidence: 0%";
 
+
         fruitProgress.style.width =
             "0%";
+
 
         alert(
             "Unable to get prediction from the server."
@@ -179,7 +302,10 @@ fruitPredictBtn.addEventListener("click", async function () {
     }
 
 
-    // Enable button again
+    // =================================================
+    // ENABLE BUTTON AGAIN
+    // =================================================
+
     fruitPredictBtn.disabled = false;
 
     fruitPredictBtn.textContent =
