@@ -3,7 +3,7 @@
 // =====================================================
 
 const BACKEND_URL =
-    "https://fruits-vegetable-classification-model.onrender.com";
+    "https://fruits-vegetable-classification-model.onrender.com/predict";
 
 
 // =====================================================
@@ -105,7 +105,7 @@ fruitPredictBtn.addEventListener("click", async function () {
 
         // Send image to FastAPI
         const response = await fetch(
-            `${BACKEND_URL}/predict/fruit`,
+            `${BACKEND_URL}`,
             {
                 method: "POST",
                 body: formData
