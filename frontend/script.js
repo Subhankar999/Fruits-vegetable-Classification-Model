@@ -3,10 +3,80 @@
 // =====================================================
 
 const BACKEND_URL =
-    "https://fruits-vegetable-classification-model.onrender.com";
+    "https://fruits-vegetable-classification-model.onrender.com/predict";
 
 
 // =====================================================
+// FRUIT ELEMENTS
+// =====================================================
+
+const fruitInput =
+    document.getElementById("fruitInput");
+
+const fruitPreview =
+    document.getElementById("fruitPreview");
+
+const fruitPlaceholder =
+    document.getElementById("fruitPlaceholder");
+
+const fruitPredictBtn =
+    document.getElementById("fruitPredictBtn");
+
+const fruitResult =
+    document.getElementById("fruitResult");
+
+const fruitConfidence =
+    document.getElementById("fruitConfidence");
+
+const fruitProgress =
+    document.getElementById("fruitProgress");
+
+
+
+
+
+// =====================================================
+// FRUIT IMAGE PREVIEW
+// =====================================================
+
+fruitInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const imageURL =
+        URL.createObjectURL(file);
+
+    fruitPreview.src = imageURL;
+
+    fruitPreview.style.display = "block";
+
+    fruitPlaceholder.style.display = "none";
+
+    fruitPredictBtn.disabled = false;
+
+    fruitResult.textContent =
+        "Ready to predict";
+
+    fruitConfidence.textContent =
+        "0%";
+
+    fruitProgress.style.width =
+        "0%";
+});
+
+
+
+
+
+
+
+
+
+
 // FRUIT PREDICTION
 // =====================================================
 
@@ -35,7 +105,7 @@ fruitPredictBtn.addEventListener("click", async function () {
 
         // Send image to FastAPI
         const response = await fetch(
-            `${BACKEND_URL}/predict/fruit`,
+            `${BACKEND_URL}/predict`,
             {
                 method: "POST",
                 body: formData
